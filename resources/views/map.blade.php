@@ -19,34 +19,37 @@
             </canvas>
 
             <div class="">
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Thông tin căn hộ A1</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Họ Tên: Dương Quang Định</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success">Chỉ đường <i class="far fa-directions"></i></button>
+                @foreach($homes as $key => $item)
+                    <div class="modal fade" id="exampleModal-{{$item->name}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thông tin căn hộ {{$item->name}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Họ Tên: Dương Quang Định</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                    <button type="button" class="btn btn-success">Chỉ đường <i class="far fa-directions"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
+
             </div>
             <div id="area" class="mx-3 my-5" style="position: absolute; width: 4096px; height: 2048px;">
                 @foreach($homes as $key => $item)
                 <div class="home-{{$item->name}}">
                     <input class="col-xs-1 py-5 mr-5 mb-5 btn btn-success" style="width: {{$item->width}}px; height: {{$item->height}}px;" type="button"
-                           name="name" value="A1"
+                           name="name" value="{{$item->name}}"
                            title="DUONG QUANG DINH | 19/05/2000"
-                           data-toggle="modal" data-target="#exampleModal"/>
+                           data-toggle="modal" data-target="#exampleModal-{{$item->name}}"/>
                 </div>
                 @endforeach
 
