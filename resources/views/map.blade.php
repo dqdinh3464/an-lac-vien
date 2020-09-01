@@ -20,6 +20,9 @@
 
             <div class="">
                 @foreach($homes as $key => $item)
+                    @php
+                        $owner =  getOwner($item->id_owner);
+                    @endphp
                     <div class="modal fade" id="exampleModal-{{$item->name}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog">
@@ -31,7 +34,11 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Họ Tên: Dương Quang Định</p>
+                                    <p>Chủ sở hữu: {{$owner->name}}</p>
+                                    <p>Ngày sinh: {{$owner->date_of_birth}}</p>
+                                    <p>Số điện thoại: {{$owner->phonenumber}}</p>
+                                    <p>Email: {{$owner->email}}</p>
+                                    <p>Địa chỉ: {{$owner->address}}</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -45,12 +52,16 @@
             </div>
             <div id="area" class="mx-3 my-5" style="position: absolute; width: 4096px; height: 2048px;">
                 @foreach($homes as $key => $item)
-                <div class="home-{{$item->name}}">
-                    <input class="col-xs-1 py-5 mr-5 mb-5 btn btn-success" style="width: {{$item->width}}px; height: {{$item->height}}px;" type="button"
-                           name="name" value="{{$item->name}}"
-                           title="DUONG QUANG DINH | 19/05/2000"
-                           data-toggle="modal" data-target="#exampleModal-{{$item->name}}"/>
-                </div>
+                    @php
+                        $owner =  getOwner($item->id_owner);
+                        $type = getHomeType($item->type_of_home);
+                    @endphp
+                    <div class="home-{{$item->name}}">
+                        <input class="col-xs-1 py-5 mr-5 mb-5 btn {{$type->background_color}}" style="width: {{$item->width}}px; height: {{$item->height}}px;" type="button"
+                               name="name" value="{{$item->name}}"
+                               title="{{$owner->name." | ".date('d-m-Y', strtotime($owner->date_of_birth))." | ".$owner->phonenumber." | ".$owner->email}}"
+                               data-toggle="modal" data-target="#exampleModal-{{$item->name}}"/>
+                    </div>
                 @endforeach
 
             </div>

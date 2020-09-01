@@ -3624,6 +3624,30 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
     margin-left: 0 !important;
 }
 
+.m-auto {
+    margin: auto !important;
+}
+
+.mt-auto,
+.my-auto {
+    margin-top: auto !important;
+}
+
+.mr-auto,
+.mx-auto {
+    margin-right: auto !important;
+}
+
+.mb-auto,
+.my-auto {
+    margin-bottom: auto !important;
+}
+
+.ml-auto,
+.mx-auto {
+    margin-left: auto !important;
+}
+
 .m-1 {
     margin: 0.25rem !important;
 }
@@ -4711,7 +4735,7 @@ textarea.input-group-sm > .form-control, textarea.input-group-sm > .input-group-
 }
 
 .navbar-nav {
-    margin: 7.5px -15px
+    margin: 7.5px -15px;
 }
 
 .navbar-nav > li > a {
@@ -6631,7 +6655,7 @@ box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 .shadow-sm {
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
 }
-
+navbar-nav
 .shadow {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
