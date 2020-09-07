@@ -20,5 +20,9 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
 
+Route::get('/search', 'HomeController@search')->name('search');
+
+//Route::post('/search', 'HomeController@searchFullText')->name('search');
+
 Auth::routes();
 

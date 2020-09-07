@@ -89,7 +89,6 @@
                                title="{{$owner->name." | ".date('d-m-Y', strtotime($owner->date_of_birth))." | ".$owner->phonenumber." | ".$owner->email}}"
                                data-toggle="modal" data-target="#exampleModal-{{$item->name}}"/>
                     @endforeach
-
                 </div>
             </div>
 
@@ -248,15 +247,13 @@
             </div>
         </div>
 
-            <div class="topnav" style="position: fixed;">
-                <div class="search-container shadow-sm">
-                    <form action="{{route('search')}}" method="GET">
-                        <input type="text" class="p-2" style="font-size: 17px; border: none;" placeholder="Tìm kiếm..." name="search">
-                        <button type="submit" class="btn mb-0" style="border-radius: 0px;"><i class="far fa-search"></i></button>
-                    </form>
-                </div>
+        <div class="topnav" style="position: fixed;">
+            <div class="search-container shadow-sm">
+                <form action="{{route('search')}}" method="GET">
+                    <input type="text" class="p-2" style="font-size: 17px; border: none;" placeholder="Tìm kiếm..." name="search">
+                    <button type="submit" class="btn mb-0" style="border-radius: 0px;"><i class="far fa-search"></i></button>
+                </form>
             </div>
+        </div>
     </div>
 @endsection
-
-
