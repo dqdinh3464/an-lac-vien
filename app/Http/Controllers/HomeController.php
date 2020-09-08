@@ -33,28 +33,27 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-//        dd(assertRegExp('^([0-9+])\w+', $request->search));
-//        if($request->search == regex('^([0-9+])\w+')){
-//            $datas = Owner::where('phonenumber', $value)->all();
-//        }
-//        else if($request->search == regex('^([A-Za-z])\w+')){
-//            $datas = Owner::where('name', $value)->all();
-//        }
-
-        $find_owner= Owner::where('name', $request->search)->get();
-
-        return view('search', compact($find_owner));
+        return view('map');
     }
 
-    public function searchFullText(Request $request)
+    public function searchAjax(Request $request)
     {
-        if ($request->search != '') {
-            $data = Owner::FullTextSearch('name', $request->search)->get();
-            foreach ($data as $key => $value) {
-                echo $value->name;
-                echo '<br>'; // mình viết vầy cho nhanh các bạn tùy chỉnh cho đẹp nhé
+        if($request->get('query'))
+        {
+            $query = $request->get('query');
+            $data = Owner::where('name', 'LIKE', "%{$query}%")
+                ->get();
+
+            $output = '<ul class="dropdown-menu" style="display:block; position: relative">';
+
+            foreach($data as $row)
+            {
+                $output .= '
+               <li><a style="font-size: 17px;" href="{{asset("/search/""'.$row->id.'")}}"'.'><i class="far fa-user"></i> '.$row->name.'</a></li>
+               ';
             }
+            $output .= '</ul>';
+            echo $output;
         }
-         return view('search', $data); //thay vì foreach như mình bạn có thể ném cái data vào 1 cái view nào đấy nhìn cho đẹp
     }
 }

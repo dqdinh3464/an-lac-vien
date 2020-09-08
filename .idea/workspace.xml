@@ -11,21 +11,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="66068ba4-0297-40af-9cb7-19845c2fa3c1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Eloquent/Owner.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/search.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/map.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/map.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers/helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/helper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Home.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Home.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Owner.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Owner.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/map (2).sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/bootstrap.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/bootstrap.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/bootstrap.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jquery-ui.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/jquery-ui.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/jquery.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/jquery.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/price-range.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/price-range.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/auth/login.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/map.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/map.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/search.blade.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -157,6 +152,9 @@
       <path value="$PROJECT_DIR$/vendor/larapack/doctrine-support" />
       <path value="$PROJECT_DIR$/vendor/intervention/image" />
       <path value="$PROJECT_DIR$/vendor/justinrainbow/json-schema" />
+      <path value="$PROJECT_DIR$/vendor/maximebf/debugbar" />
+      <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-debugbar" />
+      <path value="$PROJECT_DIR$/vendor/symfony/debug" />
     </include_path>
   </component>
   <component name="ProjectId" id="1gkrvDZeeHiYS7ddv1Vqs7iGmJW" />
@@ -217,7 +215,8 @@
       <workItem from="1599115764772" duration="10793000" />
       <workItem from="1599269198241" duration="11609000" />
       <workItem from="1599287951364" duration="12148000" />
-      <workItem from="1599465056383" duration="7837000" />
+      <workItem from="1599465056383" duration="8448000" />
+      <workItem from="1599547832265" duration="12100000" />
     </task>
     <servers />
   </component>
