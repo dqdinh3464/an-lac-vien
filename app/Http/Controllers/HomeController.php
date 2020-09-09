@@ -31,28 +31,28 @@ class HomeController extends Controller
         return view('map', compact('homes'));
     }
 
-    public function search(Request $request)
-    {
-        return view('map');
-    }
-
     public function searchAjax(Request $request)
     {
-        if($request->get('query'))
-        {
+        if ($request->get('query')) {
             $query = $request->get('query');
             $data = Owner::where('name', 'LIKE', "%{$query}%")
                 ->get();
 
             $output = '<ul class="dropdown-menu" style="display:block; position: relative">';
 
-            foreach($data as $row)
-            {
+            $str1 = '/search/';
+
+            foreach ($data as $row) {
+                $str2 = $row->id;
+
                 $output .= '
-               <li><a style="font-size: 17px;" href="{{asset("/search/""'.$row->id.'")}}"'.'><i class="far fa-user"></i> '.$row->name.'</a></li>
+               <li><a style="font-size: 17px;" href="'. $str1 . $str2 . '"><i class="far fa-user"></i> ' . $row->name . '</a></li>
                ';
             }
+
             $output .= '</ul>';
+//            dd($output);
+
             echo $output;
         }
     }

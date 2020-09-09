@@ -24,8 +24,6 @@ class Owner extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-    ];
 
     protected function fullTextWildcards($term)
     {
@@ -50,7 +48,7 @@ class Owner extends Authenticatable
         return $searchTerm;
     }
 
-    public function scopeFullTextSearch($query, $columns, $term)
+    public function fullTextSearch($query, $columns, $term)
     {
         $query->whereRaw("MATCH ({$columns}) AGAINST (? IN BOOLEAN MODE)", $this->fullTextWildcards($term));
 
