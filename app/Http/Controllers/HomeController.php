@@ -40,18 +40,15 @@ class HomeController extends Controller
 
             $output = '<ul class="dropdown-menu" style="display:block; position: relative">';
 
-            $str1 = '/search/';
-
             foreach ($data as $row) {
-                $str2 = $row->id;
+                $str = asset('#');
 
                 $output .= '
-               <li><a style="font-size: 17px;" href="'. $str1 . $str2 . '"><i class="far fa-user"></i> ' . $row->name . '</a></li>
+               <li id="home'. $row->id .'" value="'. $row->id .'"><a style="font-size: 17px;" href="'. $str. '"><i class="far fa-user"></i> ' . $row->name . '</a></li>
                ';
             }
 
             $output .= '</ul>';
-//            dd($output);
 
             echo $output;
         }

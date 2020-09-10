@@ -76,14 +76,13 @@
                         }
                     </script>
                 </canvas>
-
                 <div id="area" class="mx-3 my-5" style="position: absolute;">
                     @foreach($homes as $key => $item)
                         @php
                             $owner =  getOwner($item->id_owner);
                             $type = getHomeType($item->type_of_home);
                         @endphp
-                        <input class="py-5 mr-5 mb-5 btn-1 {{$type->background_color}}"
+                        <input id="home{{$item->id_owner}}" class="py-5 mr-5 mb-5 btn-1 {{$type->background_color}}"
                                style="width: {{$item->width}}px; height: {{$item->height}}px;" type="button"
                                name="name" value="{{$item->name}}"
                                title="{{$owner->name." | ".date('d-m-Y', strtotime($owner->date_of_birth))." | ".$owner->phonenumber." | ".$owner->email}}"
@@ -252,7 +251,7 @@
             <div class="search-container shadow-sm">
                 <form action="{{route("search")}}" method="POST">
                     <input type="text" class="p-2" name="search" id="search" style="font-size: 17px; border: none;"
-                           oninput="findHome()" placeholder="Tìm kiếm..." autocomplete="off">
+                        placeholder="Tìm kiếm...">
                     <button type="submit" class="btn mb-0" style="border-radius: 0px;"><i class="far fa-search"></i>
                     </button>
                 </form>
@@ -264,65 +263,56 @@
         </div>
 
         <script>
-            // function findHome() {
-                {{--    var query = document.getElementById("search").value; //lấy giá trị ng dùng gõ--}}
+            {{--function findHome() {--}}
+            {{--    var query = document.getElementById("search").value; //lấy giá trị ng dùng gõ--}}
 
-                {{--    if (query != '') //kiểm tra khác rỗng thì thực hiện đoạn lệnh bên dưới--}}
-                {{--    {--}}
-                {{--        var _token = $('input[name="_token"]').val(); // token để mã hóa dữ liệu--}}
+            {{--    if (query != '') //kiểm tra khác rỗng thì thực hiện đoạn lệnh bên dưới--}}
+            {{--    {--}}
+            {{--        var _token = $('input[name="_token"]').val(); // token để mã hóa dữ liệu--}}
 
-                {{--        $.ajax({--}}
-                {{--            url: "{{ route('search') }}", // đường dẫn khi gửi dữ liệu đi 'search' là tên route mình đặt bạn mở route lên xem là hiểu nó là cái j.--}}
-                {{--            method: "POST", // phương thức gửi dữ liệu.--}}
-                {{--            data: {query: query, _token: _token},--}}
-                {{--            success: function (data) { //dữ liệu nhận về--}}
-                {{--                $('#ownerList').fadeIn();--}}
-                {{--                $('#ownerList').html(data); //nhận dữ liệu dạng html và gán vào cặp thẻ có id là ownerList--}}
-                {{--            }--}}
-                {{--        });--}}
-                {{--    }--}}
+            {{--        $.ajax({--}}
+            {{--            url: "{{ route('search') }}", // đường dẫn khi gửi dữ liệu đi 'search' là tên route mình đặt bạn mở route lên xem là hiểu nó là cái j.--}}
+            {{--            method: "POST", // phương thức gửi dữ liệu.--}}
+            {{--            data: {query: query, _token: _token},--}}
+            {{--            success: function (data) { //dữ liệu nhận về--}}
+            {{--                $('#ownerList').fadeIn();--}}
+            {{--                $('#ownerList').html(data); //nhận dữ liệu dạng html và gán vào cặp thẻ có id là ownerList--}}
+            {{--            }--}}
+            {{--        });--}}
+            {{--    }--}}
 
+            {{--}--}}
 
-                {{--}--}}
-
-            var country_list = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla];
-
-            $(document).ready(function () {
-                var my_Suggestion_class = new Bloodhound({
-                    limit: 10,
-                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-                    queryTokenizer: Bloodhound.tokenizers.whitespace,
-                    local: $.map(country_list, function (item) {
-                        return {value: item};
-                    })
+            $(document).ready(function(){
+                $('#search').keyup(function(){ //bắt sự kiện keyup khi người dùng gõ từ khóa tim kiếm
+                    var query = $(this).val(); //lấy gía trị ng dùng gõ
+                    if(query != '') //kiểm tra khác rỗng thì thực hiện đoạn lệnh bên dưới
+                    {
+                        var _token = $('input[name="_token"]').val(); // token để mã hóa dữ liệu
+                        $.ajax({
+                            url:"{{ route('search') }}", // đường dẫn khi gửi dữ liệu đi 'search' là tên route mình đặt bạn mở route lên xem là hiểu nó là cái j.
+                            method:"POST", // phương thức gửi dữ liệu.
+                            data:{query:query, _token:_token},
+                            success:function(data){ //dữ liệu nhận về
+                                $('#ownerList').fadeIn();
+                                $('#ownerList').html(data); //nhận dữ liệu dạng html và gán vào cặp thẻ có id là countryList
+                            }
+                        });
+                    }
                 });
 
-                my_Suggestion_class.initialize();
+                $(document).on('click', 'li', function(){
+                    var id = $(this).val();
 
-                var typeahead_elem = $('#search');
-                typeahead_elem.typeahead({
-                        hint: true,
-                        highlight: true,
-                        minLength: 1
-                    },
-                    {
-                        name: 'value',
-                        displayKey: 'value',
-                        source: my_Suggestion_class.ttAdapter(),
-                        templates: {
-                            empty: [
-                                '<div class="noitems">',
-                                'Không tìm thấy',
-                                '</div>'
-                            ].join('\n')
-                        }
-                    });
+                    for (var i = 0; i < 10; i++){
+                        document.getElementById('home' + id).style.backgroundColor = "black";
+                    }
+                        // $().css({"background-color": "black"});
+                });
+
             });
 
 
-            // function featureHome() {
-            //
-            // }
         </script>
     </div>
 @endsection
