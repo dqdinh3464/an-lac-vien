@@ -9,14 +9,13 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
     <script src="{{asset("/js/html5shiv.js")}}"></script>
 {{--    <script src="{{asset("/js/respond.min.js")}}"></script>--}}
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
 {{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
@@ -51,11 +50,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">ĐĂNG NHẬP</a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">ĐĂNG KÝ</a>
-                                </li>
-                            @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-uppercase" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre >
@@ -93,10 +87,12 @@
     <script src="{{asset("/js/jquery.js")}}"></script>
     <script src="{{asset("/js/jquery-ui.min.js")}}"></script>
     <script src="{{asset("/js/bootstrap.min.js")}}"></script>
-{{--    <script src="{{asset("/js/jquery.scrollUp.min.js")}}"></script>--}}
-{{--    <script src="{{asset("/js/jquery.prettyPhoto.js")}}"></script>--}}
+    <script src="{{asset("/js/jquery.scrollUp.min.js")}}"></script>
+    <script src="{{asset("/js/jquery.prettyPhoto.js")}}"></script>
     <script src="{{asset("/js/main.js")}}"></script>
     <script src="{{asset("/js/typeahead.bundle.js")}}"></script>
     <script src="{{asset("/js/bloodhound.js")}}"></script>
+
+    @yield('js')
 </body>
 </html>

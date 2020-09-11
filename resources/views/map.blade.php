@@ -37,7 +37,6 @@
                     </div>
                 </div>
             @endforeach
-
         </div>
 
         <div id="home" style="width: {{27*200 + 30*26}}px; height: {{26*120 + 30*26}}px; position: absolute;">
@@ -82,7 +81,7 @@
                             $owner =  getOwner($item->id_owner);
                             $type = getHomeType($item->type_of_home);
                         @endphp
-                        <input id="home{{$item->id_owner}}" class="py-5 mr-5 mb-5 btn-1 {{$type->background_color}}"
+                        <input class="delete-css py-5 mr-5 mb-5 btn-1 {{$type->background_color}} home{{$item->id_owner}}"
                                style="width: {{$item->width}}px; height: {{$item->height}}px;" type="button"
                                name="name" value="{{$item->name}}"
                                title="{{$owner->name." | ".date('d-m-Y', strtotime($owner->date_of_birth))." | ".$owner->phonenumber." | ".$owner->email}}"
@@ -92,124 +91,6 @@
                 </div>
             </div>
 
-            <script>
-                let z = 1;
-
-                const elem3 = document.querySelector('#home');
-                // const elem1 = document.querySelector('#area');
-                // const elem2 = document.querySelector('#myCanvas');
-
-                // elem1.onwheel = zoom;
-                // elem2.onwheel = zoom;
-                elem3.onwheel = zoom;
-
-                // elem1.addEventListener('wheel', zoom);
-                // elem2.addEventListener('wheel', zoom);
-                elem3.addEventListener('wheel', zoom);
-
-                function zoom(event) {
-                    event.preventDefault();
-
-                    z = z + event.deltaY * -0.00025;
-                    z = Math.min(Math.max(0.2, z), 1);
-
-                    // elem1.style.zoom = z;
-                    // elem2.style.zoom = z;
-                    elem3.style.zoom = z;
-                }
-
-                function zoomIn() {
-                    $(document).ready(function () {
-                        var z = parseFloat($('#area').css('zoom'));
-
-                        $('.zoom-in').on('click', function () {
-                            z = z + 0.1;
-
-                            if (z < 1.0) {
-                                // $('#area').css('zoom', z.toString());
-                                // $('#myCanvas').css('zoom', z.toString());
-                                $('#home').css('zoom', z.toString());
-                            } else {
-                                // $('#area').css('zoom', 1.0.toString());
-                                // $('#myCanvas').css('zoom', 1.0.toString());
-                                $('#home').css('zoom', 1.0.toString());
-                            }
-                        });
-                    });
-                }
-
-                function zoomOut() {
-                    $(document).ready(function () {
-                        var z = parseFloat($('#area').css('zoom'));
-
-                        $('.zoom-out').on('click', function () {
-                            z = z - 0.1;
-
-                            if (z > 0.2) {
-                                // $('#area').css('zoom', z.toString());
-                                // $('#myCanvas').css('zoom', z.toString());
-                                $('#home').css('zoom', z.toString());
-                            } else {
-                                // $('#area').css('zoom', 0.2.toString());
-                                // $('#myCanvas').css('zoom', 0.2.toString());
-                                $('#home').css('zoom', 0.2.toString());
-                            }
-                        });
-                    });
-                }
-
-                function zoomReset() {
-                    $('.zoom-init').on('click', function () {
-                        // $('#area').css('zoom', '1.0');
-                        // $('#myCanvas').css('zoom', '1.0');
-                        $('#home').css('zoom', '1.0');
-                    });
-                }
-
-                // document.addEventListener('DOMContentLoaded', function() {
-                //     const elem = document.getElementById('home');
-                //     elem.style.cursor = 'move';
-                //
-                //     let pos = { top: 0, left: 0, x: 0, y: 0 };
-                //
-                //     const mouseDownHandler = function(e) {
-                //         elem.style.cursor = 'move';
-                //         elem.style.userSelect = 'none';
-                //
-                //         pos = {
-                //             left: elem.scrollLeft,
-                //             top: elem.scrollTop,
-                //             // Get the current mouse position
-                //             x: e.clientX,
-                //             y: e.clientY,
-                //         };
-                //
-                //         document.addEventListener('mousemove', mouseMoveHandler);
-                //         document.addEventListener('mouseup', mouseUpHandler);
-                //     };
-                //
-                //     const mouseMoveHandler = function(e) {
-                //         // How far the mouse has been moved
-                //         const dx = e.clientX - pos.x;
-                //         const dy = e.clientY - pos.y;
-                //
-                //         // Scroll the element
-                //         elem.scrollTop = pos.top - dy;
-                //         elem.scrollLeft = pos.left - dx;
-                //     };
-                //
-                //     const mouseUpHandler = function() {
-                //         elem.style.cursor = 'move';
-                //         elem.style.removeProperty('user-select');
-                //
-                //         document.removeEventListener('mousemove', mouseMoveHandler);
-                //         document.removeEventListener('mouseup', mouseUpHandler);
-                //     };
-                //
-                //     // Attach the handler
-                //     elem.addEventListener('mousedown', mouseDownHandler);
-                // });
-            </script>
         </div>
 
         <div class="d-flex flex-column justify-content-around" style="position: fixed; right: 5px; bottom: 5px;">
@@ -247,74 +128,151 @@
             </div>
         </div>
 
-        <div class="topnav" style="position: fixed;">
-            <div class="search-container shadow-sm">
-                <form action="{{route("search")}}" method="POST">
-                    <input type="text" class="p-2" name="search" id="search" style="font-size: 17px; border: none;"
-                        placeholder="Tìm kiếm...">
-                    <button type="submit" class="btn mb-0" style="border-radius: 0px;"><i class="far fa-search"></i>
-                    </button>
-                </form>
-            </div>
-            <div id="ownerList">
+        <div class="search-container shadow-sm" style="position: fixed; left: 43%;">
+            {{--                <form action="{{route("search")}}" method="POST">--}}
+            {{--                    @csrf--}}
+            <input type="text" class="p-2" name="search" id="search" style="font-size: 17px; border: none;"
+                   placeholder="Tìm kiếm..." list="browsers">
+            <datalist id="browsers">
+                @foreach($owners as $item)
+                    <option value="{{$item->id}}">{{$item->name}}</option>
+                @endforeach
+            </datalist>
 
-            </div>
-            {{ csrf_field() }}
+            <button type="submit" onclick="addCss()" onkeypress="addCss()" " class="btn mb-0" style="border-radius: 0px;"><i class="far fa-search"></i>
+            </button>
+            {{--                </form>--}}
         </div>
-
-        <script>
-            {{--function findHome() {--}}
-            {{--    var query = document.getElementById("search").value; //lấy giá trị ng dùng gõ--}}
-
-            {{--    if (query != '') //kiểm tra khác rỗng thì thực hiện đoạn lệnh bên dưới--}}
-            {{--    {--}}
-            {{--        var _token = $('input[name="_token"]').val(); // token để mã hóa dữ liệu--}}
-
-            {{--        $.ajax({--}}
-            {{--            url: "{{ route('search') }}", // đường dẫn khi gửi dữ liệu đi 'search' là tên route mình đặt bạn mở route lên xem là hiểu nó là cái j.--}}
-            {{--            method: "POST", // phương thức gửi dữ liệu.--}}
-            {{--            data: {query: query, _token: _token},--}}
-            {{--            success: function (data) { //dữ liệu nhận về--}}
-            {{--                $('#ownerList').fadeIn();--}}
-            {{--                $('#ownerList').html(data); //nhận dữ liệu dạng html và gán vào cặp thẻ có id là ownerList--}}
-            {{--            }--}}
-            {{--        });--}}
-            {{--    }--}}
-
-            {{--}--}}
-
-            $(document).ready(function(){
-                $('#search').keyup(function(){ //bắt sự kiện keyup khi người dùng gõ từ khóa tim kiếm
-                    var query = $(this).val(); //lấy gía trị ng dùng gõ
-                    if(query != '') //kiểm tra khác rỗng thì thực hiện đoạn lệnh bên dưới
-                    {
-                        var _token = $('input[name="_token"]').val(); // token để mã hóa dữ liệu
-                        $.ajax({
-                            url:"{{ route('search') }}", // đường dẫn khi gửi dữ liệu đi 'search' là tên route mình đặt bạn mở route lên xem là hiểu nó là cái j.
-                            method:"POST", // phương thức gửi dữ liệu.
-                            data:{query:query, _token:_token},
-                            success:function(data){ //dữ liệu nhận về
-                                $('#ownerList').fadeIn();
-                                $('#ownerList').html(data); //nhận dữ liệu dạng html và gán vào cặp thẻ có id là countryList
-                            }
-                        });
-                    }
-                });
-
-                $(document).on('click', 'li', function(){
-                    var id = $(this).val();
-
-                    for (var i = 0; i < 10; i++){
-                        document.getElementById('home' + id).style.backgroundColor = "black";
-                    }
-                        // $().css({"background-color": "black"});
-                });
-
-            });
-
-
-        </script>
     </div>
+@endsection
+
+@section("js")
+    <script>
+        let z = 1;
+
+        const elem3 = document.querySelector('#home');
+        // const elem1 = document.querySelector('#area');
+        // const elem2 = document.querySelector('#myCanvas');
+
+        // elem1.onwheel = zoom;
+        // elem2.onwheel = zoom;
+        elem3.onwheel = zoom;
+
+        // elem1.addEventListener('wheel', zoom);
+        // elem2.addEventListener('wheel', zoom);
+        elem3.addEventListener('wheel', zoom);
+
+        function zoom(event) {
+            event.preventDefault();
+
+            z = z + event.deltaY * -0.00025;
+            z = Math.min(Math.max(0.2, z), 1);
+
+            // elem1.style.zoom = z;
+            // elem2.style.zoom = z;
+            elem3.style.zoom = z;
+        }
+
+        function zoomIn() {
+            $(document).ready(function () {
+                var z = parseFloat($('#area').css('zoom'));
+
+                $('.zoom-in').on('click', function () {
+                    z = z + 0.1;
+
+                    if (z < 1.0) {
+                        // $('#area').css('zoom', z.toString());
+                        // $('#myCanvas').css('zoom', z.toString());
+                        $('#home').css('zoom', z.toString());
+                    } else {
+                        // $('#area').css('zoom', 1.0.toString());
+                        // $('#myCanvas').css('zoom', 1.0.toString());
+                        $('#home').css('zoom', 1.0.toString());
+                    }
+                });
+            });
+        }
+
+        function zoomOut() {
+            $(document).ready(function () {
+                var z = parseFloat($('#area').css('zoom'));
+
+                $('.zoom-out').on('click', function () {
+                    z = z - 0.1;
+
+                    if (z > 0.2) {
+                        // $('#area').css('zoom', z.toString());
+                        // $('#myCanvas').css('zoom', z.toString());
+                        $('#home').css('zoom', z.toString());
+                    } else {
+                        // $('#area').css('zoom', 0.2.toString());
+                        // $('#myCanvas').css('zoom', 0.2.toString());
+                        $('#home').css('zoom', 0.2.toString());
+                    }
+                });
+            });
+        }
+
+        function zoomReset() {
+            $('.zoom-init').on('click', function () {
+                // $('#area').css('zoom', '1.0');
+                // $('#myCanvas').css('zoom', '1.0');
+                $('#home').css('zoom', '1.0');
+            });
+        }
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const elem = document.getElementById('home');
+        //     elem.style.cursor = 'move';
+        //
+        //     let pos = { top: 0, left: 0, x: 0, y: 0 };
+        //
+        //     const mouseDownHandler = function(e) {
+        //         elem.style.cursor = 'move';
+        //         elem.style.userSelect = 'none';
+        //
+        //         pos = {
+        //             left: elem.scrollLeft,
+        //             top: elem.scrollTop,
+        //             // Get the current mouse position
+        //             x: e.clientX,
+        //             y: e.clientY,
+        //         };
+        //
+        //         document.addEventListener('mousemove', mouseMoveHandler);
+        //         document.addEventListener('mouseup', mouseUpHandler);
+        //     };
+        //
+        //     const mouseMoveHandler = function(e) {
+        //         // How far the mouse has been moved
+        //         const dx = e.clientX - pos.x;
+        //         const dy = e.clientY - pos.y;
+        //
+        //         // Scroll the element
+        //         elem.scrollTop = pos.top - dy;
+        //         elem.scrollLeft = pos.left - dx;
+        //     };
+        //
+        //     const mouseUpHandler = function() {
+        //         elem.style.cursor = 'move';
+        //         elem.style.removeProperty('user-select');
+        //
+        //         document.removeEventListener('mousemove', mouseMoveHandler);
+        //         document.removeEventListener('mouseup', mouseUpHandler);
+        //     };
+        //
+        //     // Attach the handler
+        //     elem.addEventListener('mousedown', mouseDownHandler);
+        // });
+    </script>
+
+    <script>
+        function addCss() {
+            $('.delete-css').css({"border": "none"});
+            var id = document.getElementById('search').value;
+            $('.home' + id).css({"border": "5px solid black"});
+        }
+    </script>
 @endsection
 
 

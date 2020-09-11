@@ -26,31 +26,18 @@ class HomeController extends Controller
     public function index()
     {
         $homes = Home::all()->sortBy('sort');
+        $owners = Owner::all();
 
-
-        return view('map', compact('homes'));
+        return view('map', compact('homes', 'owners'));
     }
 
-    public function searchAjax(Request $request)
+    public function search(Request $request)
     {
-        if ($request->get('query')) {
-            $query = $request->get('query');
-            $data = Owner::where('name', 'LIKE', "%{$query}%")
-                ->get();
-
-            $output = '<ul class="dropdown-menu" style="display:block; position: relative">';
-
-            foreach ($data as $row) {
-                $str = asset('#');
-
-                $output .= '
-               <li id="home'. $row->id .'" value="'. $row->id .'"><a style="font-size: 17px;" href="'. $str. '"><i class="far fa-user"></i> ' . $row->name . '</a></li>
-               ';
-            }
-
-            $output .= '</ul>';
-
-            echo $output;
-        }
+//        if ($request->get('search')) {
+//            $value = $request->get('search');
+//            $datasFind = Owner::where('name', 'LIKE', "%{$value}%")->get();
+//        }
+//
+//        return view('map', compact('datasFind'));
     }
 }
