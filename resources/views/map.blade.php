@@ -39,15 +39,15 @@
             @endforeach
         </div>
 
-        <div id="home" style="width: {{27*200 + 30*26}}px; height: {{26*120 + 30*26}}px; position: absolute;">
+        <div id="home" style="width: {{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}px; height: {{setting('home.home_y')*120 + 30*setting('home.home_y')}}px; position: absolute;">
             <div class="ml-3">
                 <input type="button" class="col-xs-2 py-5 mr-5 btn-1 btn-secondary" style="width: 430px;height: 120px;"
                        value="Phòng bảo vệ">
             </div>
 
             <div class="scrollable-bar"
-                 style="width: {{27*200 + 30*26}}px; height: {{26*120 + 30*26}}px; overflow: auto;">
-                <canvas id="myCanvas" class="mx-3" width="{{27*200 + 30*26}}" height="{{26*120 + 30*26}}"
+                 style="width: {{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}px; height: {{setting('home.home_y')*120 + 30*setting('home.home_y')}}px; overflow: auto;">
+                <canvas id="myCanvas" class="mx-3" width="{{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}" height="{{setting('home.home_y')*120 + 30*setting('home.home_y')}}"
                         style="position: absolute;">
                     <script>
                         var c = document.getElementById("myCanvas");
@@ -76,18 +76,31 @@
                     </script>
                 </canvas>
                 <div id="area" class="mx-3 my-5" style="position: absolute;">
-                    @foreach($homes as $key => $item)
+                    @php
+                        //dd(getRow(1));
+                        $x = setting('home.home_x');
+                        $y = setting('home.home_y');
+                    @endphp
+                    @for($i = 1; $i <= $y; $i++)
                         @php
-                            $owner =  getOwner($item->id_owner);
-                            $type = getHomeType($item->type_of_home);
+                            $items = getRow($i);
                         @endphp
-                        <input class="delete-css py-5 mr-5 mb-5 btn-1 {{$type->background_color}} home{{$item->id_owner}}"
-                               style="width: {{$item->width}}px; height: {{$item->height}}px;" type="button"
-                               name="name" value="{{$item->name}}"
-                               title="{{$owner->name." | ".date('d-m-Y', strtotime($owner->date_of_birth))." | ".$owner->phonenumber." | ".$owner->email}}"
-                               data-toggle="modal" data-target="#exampleModal-{{$item->name}}"/>
-                    @endforeach
-
+{{--                        @for($j = 0; $j < $x; $j++)--}}
+                        @foreach($items as $item)
+                            @php
+                                $owner =  getOwner($item['id_owner']);
+                                $type = getHomeType($item['type_of_home']);
+                            @endphp
+                            <input
+                                class="delete-css py-5 mr-5 mb-5 btn-1 {{$type['background_color']}} home{{$item['id_owner']}}"
+                                style="width: {{$item['width']}}px; height: {{$item['height']}}px;" type="button"
+                                name="name" value="{{$item['name']}}"
+                                title="{{$owner['name']." | ".date('d-m-Y', strtotime($owner['date_of_birth']))." | ".$owner['phonenumber']." | ".$owner['email']}}"
+                                data-toggle="modal" data-target="#exampleModal-{{$item['name']}}"/>
+{{--                        @endfor--}}
+                        @endforeach
+                        <br>
+                    @endfor
                 </div>
             </div>
 
@@ -139,7 +152,8 @@
                 @endforeach
             </datalist>
 
-            <button type="submit" onclick="addCss()" onkeypress="addCss()" " class="btn mb-0" style="border-radius: 0px;"><i class="far fa-search"></i>
+            <button type="submit" onclick="addCss()" onkeypress="addCss()"
+            " class="btn mb-0" style="border-radius: 0px;"><i class="far fa-search"></i>
             </button>
             {{--                </form>--}}
         </div>
