@@ -19,18 +19,20 @@
                                 </button>
                             </div>
                             <div class="modal-body">
+                                @auth
                                 <p>Chủ sở hữu: {{$owner->name}}</p>
                                 <p>Ngày sinh: {{$owner->date_of_birth}}</p>
                                 <p>Số điện thoại: {{$owner->phonenumber}}</p>
                                 <p>Email: {{$owner->email}}</p>
                                 <p>Địa chỉ: {{$owner->address}}</p>
+                                @endauth
                                 <p>Loại nhà: <strong>{{getHomeType($item->type_of_home)->name}}</strong></p>
                                 <p>Tình Trạng: <strong>{{$item->status}}</strong></p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                <button type="button" class="btn btn-success"
-                                        onclick="drawWay({{$item->x}}, {{$item->y}});">
+                                <button type="button" class="btn btn-success btn-canvas" data-dismiss="modal"
+                                        onclick="drawWay({{$item->x}}, {{$item->y}})">
                                     Chỉ đường <i class="far fa-directions"></i></button>
                             </div>
                         </div>
@@ -55,10 +57,11 @@
                         ctx.lineWidth = 10;
                         ctx.lineCap = "round";
                         ctx.lineJoin = "round";
-                        ctx.beginPath();
 
                         function drawWay(x, y) {
-                            // ctx.clearRect(0,0,6180,3900);
+                            ctx.clearRect(0, 0, $('canvas')[0].width, $('canvas')[0].height);
+                            ctx.beginPath();
+
                             ctx.moveTo(215, 0);
                             ctx.lineTo(215, 15);
 
@@ -70,8 +73,6 @@
                             ctx.lineTo(xx, yy + 15);
 
                             ctx.stroke();
-
-                            return;
                         }
                     </script>
                 </canvas>
@@ -282,9 +283,33 @@
 
     <script>
         function addCss() {
-            $('.delete-css').css({"border": "none"});
+            // $('.delete-css').animate([
+            //     { background-color: '#000' },
+            //     { background-color: '#fff' }
+            // ], {
+            //     duration: 100,
+            //     iterations: Infinity
+            // });
+
             var id = document.getElementById('search').value;
-            $('.home' + id).css({"border": "5px solid black"});
+
+            $.keyframe.define([{
+                name: 'feature',
+                '0%':   {'background-color': '#000'},
+                '0%': {'background-color': '#fff'}
+            }]);
+
+            $('.home' + id).playKeyframe({
+                name:'feature',
+                duration:"0.7s",
+                timingFunction:'ease',
+                iterationCount:'infinite',
+                direction:'normal',
+                fillMode:'forwards',
+                complete: increment
+            });
+
+            // $('.home' + id).resetKeyframe(callback);
         }
     </script>
 @endsection

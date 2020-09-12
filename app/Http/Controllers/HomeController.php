@@ -13,10 +13,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
 
     /**
      * Show the application dashboard.
@@ -25,19 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $homes = Home::all()->sortBy('sort');
+        $homes = Home::all();
         $owners = Owner::all();
 
         return view('map', compact('homes', 'owners'));
-    }
-
-    public function search(Request $request)
-    {
-//        if ($request->get('search')) {
-//            $value = $request->get('search');
-//            $datasFind = Owner::where('name', 'LIKE', "%{$value}%")->get();
-//        }
-//
-//        return view('map', compact('datasFind'));
     }
 }
