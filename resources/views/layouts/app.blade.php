@@ -25,6 +25,9 @@
     <link href="{{asset("/css/animate.css")}}" rel="stylesheet">
     <link href="{{asset("/css/main.css")}}" rel="stylesheet">
     <link href="{{asset("/css/responsive.css")}}" rel="stylesheet">
+    <style>
+
+    </style>
 </head>
 <body>
     <div id="app">

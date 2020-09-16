@@ -20,11 +20,11 @@
                             </div>
                             <div class="modal-body">
                                 @auth
-                                <p>Chủ sở hữu: {{$owner->name}}</p>
-                                <p>Ngày sinh: {{$owner->date_of_birth}}</p>
-                                <p>Số điện thoại: {{$owner->phonenumber}}</p>
-                                <p>Email: {{$owner->email}}</p>
-                                <p>Địa chỉ: {{$owner->address}}</p>
+                                    <p>Chủ sở hữu: {{$owner->name}}</p>
+                                    <p>Ngày sinh: {{$owner->date_of_birth}}</p>
+                                    <p>Số điện thoại: {{$owner->phonenumber}}</p>
+                                    <p>Email: {{$owner->email}}</p>
+                                    <p>Địa chỉ: {{$owner->address}}</p>
                                 @endauth
                                 <p>Loại nhà: <strong>{{getHomeType($item->type_of_home)->name}}</strong></p>
                                 <p>Tình Trạng: <strong>{{$item->status}}</strong></p>
@@ -41,7 +41,8 @@
             @endforeach
         </div>
 
-        <div id="home" style="width: {{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}px; height: {{setting('home.home_y')*120 + 30*setting('home.home_y')}}px; position: absolute;">
+        <div id="home"
+             style="width: {{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}px; height: {{setting('home.home_y')*120 + 30*setting('home.home_y')}}px; position: absolute;">
             <div class="ml-3">
                 <input type="button" class="col-xs-2 py-5 mr-5 btn-1 btn-secondary" style="width: 430px;height: 120px;"
                        value="Phòng bảo vệ">
@@ -49,7 +50,9 @@
 
             <div class="scrollable-bar"
                  style="width: {{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}px; height: {{setting('home.home_y')*120 + 30*setting('home.home_y')}}px; overflow: auto;">
-                <canvas id="myCanvas" class="mx-3" width="{{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}" height="{{setting('home.home_y')*120 + 30*setting('home.home_y')}}"
+                <canvas id="myCanvas" class="mx-3"
+                        width="{{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}"
+                        height="{{setting('home.home_y')*120 + 30*setting('home.home_y')}}"
                         style="position: absolute;">
                     <script>
                         var c = document.getElementById("myCanvas");
@@ -86,19 +89,17 @@
                         @php
                             $items = getRow($i);
                         @endphp
-{{--                        @for($j = 0; $j < $x; $j++)--}}
                         @foreach($items as $item)
                             @php
                                 $owner =  getOwner($item['id_owner']);
                                 $type = getHomeType($item['type_of_home']);
                             @endphp
                             <input
-                                class="delete-css py-5 mr-5 mb-5 btn-1 {{$type['background_color']}} home{{$item['id_owner']}}"
+                                class="search-point{{$item['id_owner']}} delete-css py-5 mr-5 mb-5 btn-1 {{$type['background_color']}} home{{$item['id_owner']}}"
                                 style="width: {{$item['width']}}px; height: {{$item['height']}}px;" type="button"
                                 name="name" value="{{$item['name']}}"
                                 title="{{$owner['name']." | ".date('d-m-Y', strtotime($owner['date_of_birth']))." | ".$owner['phonenumber']." | ".$owner['email']}}"
                                 data-toggle="modal" data-target="#exampleModal-{{$item['name']}}"/>
-{{--                        @endfor--}}
                         @endforeach
                         <br>
                     @endfor
@@ -143,20 +144,17 @@
         </div>
 
         <div class="search-container shadow-sm" style="position: fixed; left: 43%;">
-            {{--                <form action="{{route("search")}}" method="POST">--}}
-            {{--                    @csrf--}}
             <input type="text" class="p-2" name="search" id="search" style="font-size: 17px; border: none;"
                    placeholder="Tìm kiếm..." list="browsers">
             <datalist id="browsers">
                 @foreach($owners as $item)
-                    <option value="{{$item->id}}">{{$item->name}}</option>
+                    <option id="{{$item->id}}" value="{{$item->id}}">{{$item->name}}</option>
                 @endforeach
             </datalist>
 
-            <button type="submit" onclick="addCss()" onkeypress="addCss()"
-            " class="btn mb-0" style="border-radius: 0px;"><i class="far fa-search"></i>
+            <button type="submit" onclick="addCss()" class="btn btn-secondary mb-0" style="border-radius: 0px;">
+                <i class="far fa-search"></i>
             </button>
-            {{--                </form>--}}
         </div>
     </div>
 @endsection
@@ -283,33 +281,67 @@
 
     <script>
         function addCss() {
-            // $('.delete-css').animate([
-            //     { background-color: '#000' },
-            //     { background-color: '#fff' }
-            // ], {
-            //     duration: 100,
-            //     iterations: Infinity
-            // });
+            var listStyle = document.getElementsByTagName("style")[0];
+            if(listStyle.length != 0){
+                listStyle.removeChild(listStyle.childNodes[0]);
+            }
+            console.log(listStyle);
 
-            var id = document.getElementById('search').value;
+            var id = document.getElementById('search').value; //get id của người cần tìm
+            // var styleElem = document.createElement('style'); //tạo thẻ style
+            var name = "searchpoint"; //đặt tên cho animation
+            var value = "0% {background: #fff;}\n100% {background: #daf04e;}"; //set giá trị @keyframes
 
-            $.keyframe.define([{
-                name: 'feature',
-                '0%':   {'background-color': '#000'},
-                '0%': {'background-color': '#fff'}
-            }]);
+            var textNode = document.createTextNode("" +
+                ".search-point" + id + "{\n" + "position: relative;\n" + "animation: searchpoint 0.7s infinite;\n}\n" +
+                "@keyframes " + name + "{\n" + value + "\n}"
+            );
 
-            $('.home' + id).playKeyframe({
-                name:'feature',
-                duration:"0.7s",
-                timingFunction:'ease',
-                iterationCount:'infinite',
-                direction:'normal',
-                fillMode:'forwards',
-                complete: increment
-            });
+            console.log(textNode);
+            // styleElem.appendChild(textNode);
+            listStyle.appendChild(textNode);
+            // document.head.appendChild(styleElem);
+            document.head.appendChild(listStyle);
 
-            // $('.home' + id).resetKeyframe(callback);
+            // if (CSS && CSS.supports && CSS.supports('animation: name')) {
+            //     addKeyFrames = function(name, value) {
+            //         // var pos = myReuseableStylesheet.length;
+            //         myReuseableStylesheet.insertRule("@keyframes " + name + "{" + value + "}", pos);
+            //     }
+            //     console.log("111");
+            // } else {
+            //     addKeyFrames = function (name, value) {
+            //         var str = name + "{" + value + "}";
+            //         // var pos = myReuseableStylesheet.length;
+            //         myReuseableStylesheet.insertRule("@-webkit-keyframes " + str, pos);
+            //         myReuseableStylesheet.insertRule("@keyframes " + str, pos + 1);
+            //     }
+            // }
+
+            // var id = document.getElementById('search').value;
+            // console.log(id);
+            //
+            //     var arrayJson =
+            //     {
+            //         '0%' :  {'background': '#fff'}
+            //         '100%' : {'background': '#f0ad4e'}
+            //     }
+            //
+            //     $.keyframe.define(
+            //         [
+            //             $.extend({ name: 'searchpoint' }, arrayJson)
+            //         ]
+            //     );
+            //
+            //     $('.home' + id).playKeyframe({
+            //         name:'searchpoint',
+            //         duration:"0.7s",
+            //         timingFunction:'ease',
+            //         iterationCount:'100',
+            //         direction:'normal',
+            //         fillMode:'forwards',
+            //         complete: increment
+            //     });
         }
     </script>
 @endsection
