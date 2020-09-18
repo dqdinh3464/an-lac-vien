@@ -109,11 +109,9 @@
         </div>
 
         <div class="d-flex flex-column justify-content-around" style="position: fixed; right: 5px; bottom: 5px;">
-            <!--    <a class="btn zoom-in bg-white" style="border: solid 1px;" onclick="zoomIn()"><i class="fas fa-search-plus"></i></a>-->
-            <!--    <a class="btn zoom-out bg-white" style="border: solid 1px;" onclick="zoomOut()"><i-->
-            <!--            class="fas fa-search-minus"></i></a>-->
-            <a class="btn zoom-init bg-white" style="border: solid 1px;" onclick="zoomReset()"><i
-                    class="fas fa-recycle"></i></a>
+            <a class="btn zoom-in bg-white" style="border: solid 1px;" onclick="zoomIn()"><i class="fas fa-search-plus"></i></a>
+            <a class="btn zoom-out bg-white" style="border: solid 1px;" onclick="zoomOut()"><i class="fas fa-search-minus"></i></a>
+            <a class="btn zoom-init bg-white" style="border: solid 1px;" onclick="zoomReset()"><i class="fas fa-recycle"></i></a>
         </div>
 
         <div class="bg-white mt-4" style="border: solid 1px; right: 5px; position: fixed;">
@@ -161,76 +159,57 @@
 
 @section("js")
     <script>
-        let z = 1;
+        var z = 1.0;
 
-        const elem3 = document.querySelector('#home');
-        // const elem1 = document.querySelector('#area');
-        // const elem2 = document.querySelector('#myCanvas');
+        const elem = document.querySelector('#home');
+        elem.onwheel = zoom;
+        elem.addEventListener('wheel', zoom);
 
-        // elem1.onwheel = zoom;
-        // elem2.onwheel = zoom;
-        elem3.onwheel = zoom;
-
-        // elem1.addEventListener('wheel', zoom);
-        // elem2.addEventListener('wheel', zoom);
-        elem3.addEventListener('wheel', zoom);
-
+        //zoom bằng chuột
         function zoom(event) {
             event.preventDefault();
 
             z = z + event.deltaY * -0.00025;
-            z = Math.min(Math.max(0.2, z), 1);
+            z = Math.min(Math.max(0.2, z), 1.0);
 
-            // elem1.style.zoom = z;
-            // elem2.style.zoom = z;
-            elem3.style.zoom = z;
+            elem.style.zoom = z;
         }
 
+        //zoom to bằng nút;
         function zoomIn() {
-            $(document).ready(function () {
-                var z = parseFloat($('#area').css('zoom'));
+            $('.zoom-in').on('click', function () {
+                z = z + 0.1;
 
-                $('.zoom-in').on('click', function () {
-                    z = z + 0.1;
-
-                    if (z < 1.0) {
-                        // $('#area').css('zoom', z.toString());
-                        // $('#myCanvas').css('zoom', z.toString());
-                        $('#home').css('zoom', z.toString());
-                    } else {
-                        // $('#area').css('zoom', 1.0.toString());
-                        // $('#myCanvas').css('zoom', 1.0.toString());
-                        $('#home').css('zoom', 1.0.toString());
-                    }
-                });
+                if (z < 1.0) {
+                    $('#home').css('zoom', z.toString());
+                } else {
+                    z = 1.0;
+                    $('#home').css('zoom', z.toString());
+                }
+                console.log(z);
             });
         }
 
+        //zoom nhỏ bằng nút;
         function zoomOut() {
-            $(document).ready(function () {
-                var z = parseFloat($('#area').css('zoom'));
+            $('.zoom-out').on('click', function () {
+                z = z - 0.1;
 
-                $('.zoom-out').on('click', function () {
-                    z = z - 0.1;
-
-                    if (z > 0.2) {
-                        // $('#area').css('zoom', z.toString());
-                        // $('#myCanvas').css('zoom', z.toString());
-                        $('#home').css('zoom', z.toString());
-                    } else {
-                        // $('#area').css('zoom', 0.2.toString());
-                        // $('#myCanvas').css('zoom', 0.2.toString());
-                        $('#home').css('zoom', 0.2.toString());
-                    }
-                });
+                if (z > 0.2) {
+                    $('#home').css('zoom', z.toString());
+                } else {
+                    z = 0.2;
+                    $('#home').css('zoom', z.toString());
+                }
+                console.log(z);git
             });
         }
 
+        //khôi phục lại kích thước zoom gốc
         function zoomReset() {
             $('.zoom-init').on('click', function () {
-                // $('#area').css('zoom', '1.0');
-                // $('#myCanvas').css('zoom', '1.0');
-                $('#home').css('zoom', '1.0');
+                z = 1.0;
+                $('#home').css('zoom', z.toString());
             });
         }
 
@@ -285,63 +264,21 @@
             if(listStyle.length != 0){
                 listStyle.removeChild(listStyle.childNodes[0]);
             }
-            console.log(listStyle);
 
             var id = document.getElementById('search').value; //get id của người cần tìm
-            // var styleElem = document.createElement('style'); //tạo thẻ style
             var name = "searchpoint"; //đặt tên cho animation
             var value = "0% {background: #fff;}\n100% {background: #daf04e;}"; //set giá trị @keyframes
 
+            //tạo text node để add vào thẻ style
             var textNode = document.createTextNode("" +
-                ".search-point" + id + "{\n" + "position: relative;\n" + "animation: searchpoint 0.7s infinite;\n}\n" +
+                ".search-point" + id + "{\n" + "position: relative;\n" + "animation: searchpoint 0.7s 100;\n}\n" +
                 "@keyframes " + name + "{\n" + value + "\n}"
             );
 
-            console.log(textNode);
-            // styleElem.appendChild(textNode);
+            //add textnode vào thẻ style
             listStyle.appendChild(textNode);
-            // document.head.appendChild(styleElem);
-            document.head.appendChild(listStyle);
-
-            // if (CSS && CSS.supports && CSS.supports('animation: name')) {
-            //     addKeyFrames = function(name, value) {
-            //         // var pos = myReuseableStylesheet.length;
-            //         myReuseableStylesheet.insertRule("@keyframes " + name + "{" + value + "}", pos);
-            //     }
-            //     console.log("111");
-            // } else {
-            //     addKeyFrames = function (name, value) {
-            //         var str = name + "{" + value + "}";
-            //         // var pos = myReuseableStylesheet.length;
-            //         myReuseableStylesheet.insertRule("@-webkit-keyframes " + str, pos);
-            //         myReuseableStylesheet.insertRule("@keyframes " + str, pos + 1);
-            //     }
-            // }
-
-            // var id = document.getElementById('search').value;
-            // console.log(id);
-            //
-            //     var arrayJson =
-            //     {
-            //         '0%' :  {'background': '#fff'}
-            //         '100%' : {'background': '#f0ad4e'}
-            //     }
-            //
-            //     $.keyframe.define(
-            //         [
-            //             $.extend({ name: 'searchpoint' }, arrayJson)
-            //         ]
-            //     );
-            //
-            //     $('.home' + id).playKeyframe({
-            //         name:'searchpoint',
-            //         duration:"0.7s",
-            //         timingFunction:'ease',
-            //         iterationCount:'100',
-            //         direction:'normal',
-            //         fillMode:'forwards',
-            //         complete: increment
-            //     });
+            z = 0.2;
+            $('#home').css('zoom', z.toString());
         }
     </script>
 @endsection
