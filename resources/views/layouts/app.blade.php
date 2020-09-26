@@ -26,7 +26,14 @@
     <link href="{{asset("/css/main.css")}}" rel="stylesheet">
     <link href="{{asset("/css/responsive.css")}}" rel="stylesheet">
     <style>
-
+        .search-point{
+            position: relative;
+            animation: searchpoint 0.7s 100;
+        }
+        @keyframes searchpoint{
+            0% {background: #fff;}
+            100% {background: #daf04e};
+        }
     </style>
 </head>
 <body>

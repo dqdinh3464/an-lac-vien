@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", "HomeController@index");
+Route::get("/", "HomeController@index")->name('home.index');
+
+Route::get("/search", "HomeController@search")->name('home.search');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

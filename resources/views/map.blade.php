@@ -2,43 +2,8 @@
 
 @section('content')
     <div class="container">
-        <div class="modal-area">
-            @foreach($homes as $item)
-                @php
-                    $owner =  getOwner($item->id_owner);
-                @endphp
-                <div class="modal fade" id="exampleModal-{{$item->name}}" tabindex="-1"
-                     aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Thông tin căn hộ {{$item->name}}</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                @auth
-                                    <p>Chủ sở hữu: {{$owner->name}}</p>
-                                    <p>Ngày sinh: {{$owner->date_of_birth}}</p>
-                                    <p>Số điện thoại: {{$owner->phonenumber}}</p>
-                                    <p>Email: {{$owner->email}}</p>
-                                    <p>Địa chỉ: {{$owner->address}}</p>
-                                @endauth
-                                <p>Loại nhà: <strong>{{getHomeType($item->type_of_home)->name}}</strong></p>
-                                <p>Tình Trạng: <strong>{{$item->status}}</strong></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                <button type="button" class="btn btn-success btn-canvas" data-dismiss="modal"
-                                        onclick="drawWay({{$item->x}}, {{$item->y}})">
-                                    Chỉ đường <i class="far fa-directions"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
+        <div class="modal-area" id="modal-area">
+
         </div>
 
         <div id="home"
@@ -81,7 +46,6 @@
                 </canvas>
                 <div id="area" class="mx-3 my-5" style="position: absolute;">
                     @php
-                        //dd(getRow(1));
                         $x = setting('home.home_x');
                         $y = setting('home.home_y');
                     @endphp
@@ -91,15 +55,21 @@
                         @endphp
                         @foreach($items as $item)
                             @php
+                                $_item = json_encode($item);
+
                                 $owner =  getOwner($item['id_owner']);
+                                $_owner = json_encode($owner);
+
                                 $type = getHomeType($item['type_of_home']);
+                                $_type = json_encode($type);
                             @endphp
-                            <input
-                                class="search-point{{$item['id_owner']}} delete-css py-5 mr-5 mb-5 btn-1 {{$type['background_color']}} home{{$item['id_owner']}}"
-                                style="width: {{$item['width']}}px; height: {{$item['height']}}px;" type="button"
-                                name="name" value="{{$item['name']}}"
+                            <input type="button"
+                                class="search-point{{$owner['id']}} delete-css py-5 mr-5 mb-5 btn-1 {{$type['background_color']}} home{{$item['id_owner']}}"
+                                style="width: {{$item['width']}}px; height: {{$item['height']}}px;"
+                                value="{{$item['name']}}"
+                                onclick="showInfo({{$_item}}, {{$_owner}}, {{$_type}})"
                                 title="{{$owner['name']." | ".date('d-m-Y', strtotime($owner['date_of_birth']))." | ".$owner['phonenumber']." | ".$owner['email']}}"
-                                data-toggle="modal" data-target="#exampleModal-{{$item['name']}}"/>
+                                data-toggle="modal" data-target="#exampleModal-{{$item['name']}}">
                         @endforeach
                         <br>
                     @endfor
@@ -120,22 +90,22 @@
                 <div class="details">
                     <div class="d-flex mb-3">
                         <div class="btn btn-success mr-3 w-60"></div>
-                        <h5>Bãi đất trống</h5>
+                        <h5>{{setting('typearea.empty_area')}}</h5>
                     </div>
 
                     <div class="d-flex mb-3">
                         <div class="btn btn-warning mr-3 w-60"></div>
-                        <h5>Nhà chưa có người ở</h5>
+                        <h5>{{setting('typearea.have_built')}}</h5>
                     </div>
 
                     <div class="d-flex mb-3">
                         <div class="btn btn-danger mr-3 w-60"></div>
-                        <h5>Nhà có người ở</h5>
+                        <h5>{{setting('typearea.has_had_tomb')}}</h5>
                     </div>
 
                     <div class="d-flex mb-3">
                         <div class="btn btn-secondary mr-3 w-60"></div>
-                        <h5>Phòng bảo vệ</h5>
+                        <h5>{{setting('typearea.security')}}</h5>
                     </div>
                 </div>
             </div>
@@ -143,14 +113,14 @@
 
         <div class="search-container shadow-sm" style="position: fixed; left: 43%;">
             <input type="text" class="p-2" name="search" id="search" style="font-size: 17px; border: none;"
-                   placeholder="Tìm kiếm..." list="browsers">
+                   placeholder="Tìm kiếm..." list="browsers" required>
             <datalist id="browsers">
                 @foreach($owners as $item)
-                    <option id="{{$item->id}}" value="{{$item->id}}">{{$item->name}}</option>
+                    <option id="{{$item->id}}" value="{{$item->name}}">
                 @endforeach
             </datalist>
 
-            <button type="submit" onclick="addCss()" class="btn btn-secondary mb-0" style="border-radius: 0px;">
+            <button type="submit" id="btn-search" class="btn btn-secondary mb-0" style="border-radius: 0px;">
                 <i class="far fa-search"></i>
             </button>
         </div>
@@ -179,6 +149,7 @@
         function zoomIn() {
             $('.zoom-in').on('click', function () {
                 z = z + 0.1;
+                console.log(z);
 
                 if (z < 1.0) {
                     $('#home').css('zoom', z.toString());
@@ -186,7 +157,6 @@
                     z = 1.0;
                     $('#home').css('zoom', z.toString());
                 }
-                console.log(z);
             });
         }
 
@@ -194,6 +164,7 @@
         function zoomOut() {
             $('.zoom-out').on('click', function () {
                 z = z - 0.1;
+                console.log(z);
 
                 if (z > 0.2) {
                     $('#home').css('zoom', z.toString());
@@ -201,7 +172,6 @@
                     z = 0.2;
                     $('#home').css('zoom', z.toString());
                 }
-                console.log(z);git
             });
         }
 
@@ -212,6 +182,8 @@
                 $('#home').css('zoom', z.toString());
             });
         }
+
+
 
         // document.addEventListener('DOMContentLoaded', function() {
         //     const elem = document.getElementById('home');
@@ -259,27 +231,63 @@
     </script>
 
     <script>
-        function addCss() {
-            var listStyle = document.getElementsByTagName("style")[0];
-            if(listStyle.length != 0){
-                listStyle.removeChild(listStyle.childNodes[0]);
-            }
+        function showInfo(item, owner, type) {
+            var content = "<div class=\"modal fade\" id=\"exampleModal-" + item.name + "\" tabindex=\"-1\"\n" +
+                "                             aria-labelledby=\"exampleModalLabel\"\n" +
+                "                             aria-hidden=\"true\">\n" +
+                "                            <div class=\"modal-dialog\">\n" +
+                "                                <div class=\"modal-content\">\n" +
+                "                                    <div class=\"modal-header\">\n" +
+                "                                        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Thông tin căn hộ " + item.name + "</h5>\n" +
+                "                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Đóng\">\n" +
+                "                                            <span aria-hidden=\"true\">&times;</span>\n" +
+                "                                        </button>\n" +
+                "                                    </div>\n" +
+                "                                    <div class=\"modal-body\">\n" +
+                "                                        @auth\n" +
+                "                                            <p>Họ Tên: " + owner.name + "</p>\n" +
+                "                                            <p>Ngày sinh: " + owner.date_of_birth + "</p>\n" +
+                "                                            <p>Số điện thoại: " + owner.phonenumber + "</p>\n" +
+                "                                            <p>Email: " + owner.email + "</p>\n" +
+                "                                            <p>Địa chỉ: " + owner.address + "</p>\n" +
+                "                                        @endauth\n" +
+                "                                        <p>Loại ô đất: <strong>" + type.name + "</strong></p>\n" +
+                "                                        <p>Tình trạng: <strong>" + item.status + "</strong></p>\n" +
+                "                                    </div>\n" +
+                "                                    <div class=\"modal-footer\">\n" +
+                "                                        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Đóng</button>\n" +
+                "                                        <button type=\"button\" class=\"btn btn-success btn-canvas\" data-dismiss=\"modal\"\n" +
+                "                                                onclick=\"drawWay(" + item.x + ", " + item.y + ")\">\n" +
+                "                                            Chỉ đường <i class=\"far fa-directions\"></i></button>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                        </div>";
 
-            var id = document.getElementById('search').value; //get id của người cần tìm
-            var name = "searchpoint"; //đặt tên cho animation
-            var value = "0% {background: #fff;}\n100% {background: #daf04e;}"; //set giá trị @keyframes
-
-            //tạo text node để add vào thẻ style
-            var textNode = document.createTextNode("" +
-                ".search-point" + id + "{\n" + "position: relative;\n" + "animation: searchpoint 0.7s 100;\n}\n" +
-                "@keyframes " + name + "{\n" + value + "\n}"
-            );
-
-            //add textnode vào thẻ style
-            listStyle.appendChild(textNode);
-            z = 0.2;
-            $('#home').css('zoom', z.toString());
+            document.getElementById('modal-area').innerHTML = content;
         }
+
+        $('#btn-search').on('click',function(){
+            $value = $('#search').val();
+            $.ajax({
+                type: 'get',
+                url: '{{ URL::to('search') }}',
+                data: {
+                    'search': $value
+                },
+                success:function(data){
+                    $("input").removeClass("search-point");
+                    for(var i = 0; i < data.length; i++){
+                        $(".search-point" + data[i]).addClass("search-point");
+                    }
+
+                    //zoom nhỏ lại
+                    z = 0.2;
+                    $('#home').css('zoom', z.toString());
+                }
+            });
+        })
+        $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
     </script>
 @endsection
 
