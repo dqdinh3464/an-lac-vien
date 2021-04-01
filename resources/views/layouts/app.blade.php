@@ -7,12 +7,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>An Lạc Viên</title>
     <!-- Scripts -->
 {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
-    <script src="{{asset("/js/html5shiv.js")}}"></script>
+    <script defer src="{{asset("/js/html5shiv.js")}}"></script>
 {{--    <script src="{{asset("/js/respond.min.js")}}"></script>--}}
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script defer src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -32,7 +32,7 @@
         }
         @keyframes searchpoint{
             0% {background: #fff;}
-            100% {background: #daf04e};
+            100% {background: #daf04e}
         }
     </style>
 </head>
@@ -41,7 +41,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <b>AN LẠC VIÊN</b>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -94,14 +94,14 @@
 {{--        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="--}}
 {{--        crossorigin="anonymous">--}}
 {{--    </script>--}}
-    <script src="{{asset("/js/jquery.js")}}"></script>
-    <script src="{{asset("/js/jquery-ui.min.js")}}"></script>
-    <script src="{{asset("/js/bootstrap.min.js")}}"></script>
-    <script src="{{asset("/js/jquery.scrollUp.min.js")}}"></script>
-    <script src="{{asset("/js/jquery.prettyPhoto.js")}}"></script>
-    <script src="{{asset("/js/main.js")}}"></script>
-    <script src="{{asset("/js/typeahead.bundle.js")}}"></script>
-    <script src="{{asset("/js/bloodhound.js")}}"></script>
+    <script defer src="{{asset("/js/jquery.js")}}"></script>
+    <script defer src="{{asset("/js/jquery-ui.min.js")}}"></script>
+    <script defer src="{{asset("/js/bootstrap.min.js")}}"></script>
+    <script defer src="{{asset("/js/jquery.scrollUp.min.js")}}"></script>
+    <script defer src="{{asset("/js/jquery.prettyPhoto.js")}}"></script>
+    <script defer src="{{asset("/js/main.js")}}"></script>
+    <script defer src="{{asset("/js/typeahead.bundle.js")}}"></script>
+    <script defer src="{{asset("/js/bloodhound.js")}}"></script>
 
     @yield('js')
 </body>

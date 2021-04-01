@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Home;
+use App\HomeType;
 use App\Owner;
 use Illuminate\Http\Request;
 
@@ -29,8 +30,9 @@ class HomeController extends Controller
     {
         $homes = Home::all();
         $owners = Owner::all();
+        $home_types = HomeType::all();
 
-        return view('map', compact('homes', 'owners'));
+        return view('map', compact('homes', 'owners', 'home_types'));
     }
 
     public function search(Request $request){
@@ -43,7 +45,6 @@ class HomeController extends Controller
             }
 
             return Response($listIDOwners);
-//            return Response(json_encode($listOwners));
         }
     }
 }

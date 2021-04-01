@@ -9,7 +9,7 @@
         <div id="home"
              style="width: {{(setting('home.home_x') + 1)*200 + 30*setting('home.home_x')}}px; height: {{setting('home.home_y')*120 + 30*setting('home.home_y')}}px; position: absolute;">
             <div class="ml-3">
-                <input type="button" class="col-xs-2 py-5 mr-5 btn-1 btn-secondary" style="width: 430px;height: 120px;"
+                <input type="button" class="col-xs-2 py-5 mr-5 btn-1 btn-secondary" style="width: 430px;height: 240px;"
                        value="Phòng bảo vệ">
             </div>
 
@@ -88,30 +88,17 @@
             <div class="px-4">
                 <h4 class="text-center">CHÚ GIẢI</h4>
                 <div class="details">
-                    <div class="d-flex mb-3">
-                        <div class="btn btn-success mr-3 w-60"></div>
-                        <h5>{{setting('typearea.empty_area')}}</h5>
-                    </div>
-
-                    <div class="d-flex mb-3">
-                        <div class="btn btn-warning mr-3 w-60"></div>
-                        <h5>{{setting('typearea.have_built')}}</h5>
-                    </div>
-
-                    <div class="d-flex mb-3">
-                        <div class="btn btn-danger mr-3 w-60"></div>
-                        <h5>{{setting('typearea.has_had_tomb')}}</h5>
-                    </div>
-
-                    <div class="d-flex mb-3">
-                        <div class="btn btn-secondary mr-3 w-60"></div>
-                        <h5>{{setting('typearea.security')}}</h5>
-                    </div>
+                    @foreach($home_types as $item)
+                        <div class="d-flex mb-3">
+                            <div class="btn {{$item->background_color}} mr-3 w-60"></div>
+                            <h5>{{$item->name}}</h5>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
 
-        <div class="search-container shadow-sm" style="position: fixed; left: 43%;">
+        <div class="search-container shadow-sm" style="position: fixed; left: 50%;">
             <input type="text" class="p-2" name="search" id="search" style="font-size: 17px; border: none;"
                    placeholder="Tìm kiếm..." list="browsers" required>
             <datalist id="browsers">
@@ -232,37 +219,79 @@
 
     <script>
         function showInfo(item, owner, type) {
-            var content = "<div class=\"modal fade\" id=\"exampleModal-" + item.name + "\" tabindex=\"-1\"\n" +
-                "                             aria-labelledby=\"exampleModalLabel\"\n" +
-                "                             aria-hidden=\"true\">\n" +
-                "                            <div class=\"modal-dialog\">\n" +
-                "                                <div class=\"modal-content\">\n" +
-                "                                    <div class=\"modal-header\">\n" +
-                "                                        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Thông tin căn hộ " + item.name + "</h5>\n" +
-                "                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Đóng\">\n" +
-                "                                            <span aria-hidden=\"true\">&times;</span>\n" +
-                "                                        </button>\n" +
-                "                                    </div>\n" +
-                "                                    <div class=\"modal-body\">\n" +
-                "                                        @auth\n" +
-                "                                            <p>Họ Tên: " + owner.name + "</p>\n" +
-                "                                            <p>Ngày sinh: " + owner.date_of_birth + "</p>\n" +
-                "                                            <p>Số điện thoại: " + owner.phonenumber + "</p>\n" +
-                "                                            <p>Email: " + owner.email + "</p>\n" +
-                "                                            <p>Địa chỉ: " + owner.address + "</p>\n" +
-                "                                        @endauth\n" +
-                "                                        <p>Loại ô đất: <strong>" + type.name + "</strong></p>\n" +
-                "                                        <p>Tình trạng: <strong>" + item.status + "</strong></p>\n" +
-                "                                    </div>\n" +
-                "                                    <div class=\"modal-footer\">\n" +
-                "                                        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Đóng</button>\n" +
-                "                                        <button type=\"button\" class=\"btn btn-success btn-canvas\" data-dismiss=\"modal\"\n" +
-                "                                                onclick=\"drawWay(" + item.x + ", " + item.y + ")\">\n" +
-                "                                            Chỉ đường <i class=\"far fa-directions\"></i></button>\n" +
-                "                                    </div>\n" +
-                "                                </div>\n" +
-                "                            </div>\n" +
-                "                        </div>";
+            let s = (item.width/100)*(item.height/100);
+            let width = item.width/100;
+            let height = item.height/100;
+            let price = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price);
+            if (item.type_of_home == 3){
+                var content = "<div class=\"modal fade\" id=\"exampleModal-" + item.name + "\" tabindex=\"-1\"\n" +
+                    "                             aria-labelledby=\"exampleModalLabel\"\n" +
+                    "                             aria-hidden=\"true\">\n" +
+                    "                            <div class=\"modal-dialog\">\n" +
+                    "                                <div class=\"modal-content\">\n" +
+                    "                                    <div class=\"modal-header\">\n" +
+                    "                                        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Thông tin ô đất " + item.name + "</h5>\n" +
+                    "                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Đóng\">\n" +
+                    "                                            <span aria-hidden=\"true\">&times;</span>\n" +
+                    "                                        </button>\n" +
+                    "                                    </div>\n" +
+                    "                                    <div class=\"modal-body\">\n" +
+                    "                                        <p>Họ Tên: " + owner.name + "</p>\n" +
+                    "                                        <p>Ngày sinh: " + owner.date_of_birth + "</p>\n" +
+                    "                                        <p>Ngày mất: " + owner.date_of_death + "</p>\n" +
+                    "                                        @auth\n" +
+                    "                                            <p>Số điện thoại người thân: " + owner.phonenumber + "</p>\n" +
+                    "                                            <p>Email người thân: " + owner.email + "</p>\n" +
+                    "                                        @endauth\n" +
+                    "                                        <p>Địa chỉ người thân: " + owner.address + "</p>\n" +
+                    "                                        <p>Loại ô đất: <strong>" + type.name + "</strong></p>\n" +
+                    "                                        <p>Tình trạng: <strong>" + item.status + "</strong></p>\n" +
+                    "                                        <p>Diện tích ô đất: <strong>" + s + "m2 (" + width + "m x " + height + "m)</strong></p>\n" +
+                    "                                        <p>Giá ô đất: <strong>" + price + "</strong></p>\n" +
+                    "                                    </div>\n" +
+                    "                                    <div class=\"modal-footer\">\n" +
+                    "                                        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Đóng</button>\n" +
+                    "                                        <button type=\"button\" class=\"btn btn-success btn-canvas\" data-dismiss=\"modal\"\n" +
+                    "                                                onclick=\"drawWay(" + item.x + ", " + item.y + ")\">\n" +
+                    "                                            Chỉ đường <i class=\"far fa-directions\"></i></button>\n" +
+                    "                                    </div>\n" +
+                    "                                </div>\n" +
+                    "                            </div>\n" +
+                    "                        </div>";
+            }
+            else{
+                var content = "<div class=\"modal fade\" id=\"exampleModal-" + item.name + "\" tabindex=\"-1\"\n" +
+                    "                             aria-labelledby=\"exampleModalLabel\"\n" +
+                    "                             aria-hidden=\"true\">\n" +
+                    "                            <div class=\"modal-dialog\">\n" +
+                    "                                <div class=\"modal-content\">\n" +
+                    "                                    <div class=\"modal-header\">\n" +
+                    "                                        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Thông tin ô đất " + item.name + "</h5>\n" +
+                    "                                        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Đóng\">\n" +
+                    "                                            <span aria-hidden=\"true\">&times;</span>\n" +
+                    "                                        </button>\n" +
+                    "                                    </div>\n" +
+                    "                                    <div class=\"modal-body\">\n" +
+                    "                                        <p>Họ Tên: " + owner.name + "</p>\n" +
+                    "                                        <p>Ngày sinh: " + owner.date_of_birth + "</p>\n" +
+                    "                                        <p>Số điện thoại: " + owner.phonenumber + "</p>\n" +
+                    "                                        <p>Email: " + owner.email + "</p>\n" +
+                    "                                        <p>Địa chỉ: " + owner.address + "</p>\n" +
+                    "                                        <p>Loại ô đất: <strong>" + type.name + "</strong></p>\n" +
+                    "                                        <p>Tình trạng: <strong>" + item.status + "</strong></p>\n" +
+                    "                                        <p>Diện tích ô đất: <strong>" + s + "m2 (" + width + "m x " + height + "m)</strong></p>\n" +
+                    "                                        <p>Giá ô đất: <strong>" + price + "</strong></p>\n" +
+                    "                                    </div>\n" +
+                    "                                    <div class=\"modal-footer\">\n" +
+                    "                                        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Đóng</button>\n" +
+                    "                                        <button type=\"button\" class=\"btn btn-success btn-canvas\" data-dismiss=\"modal\"\n" +
+                    "                                                onclick=\"drawWay(" + item.x + ", " + item.y + ")\">\n" +
+                    "                                            Chỉ đường <i class=\"far fa-directions\"></i></button>\n" +
+                    "                                    </div>\n" +
+                    "                                </div>\n" +
+                    "                            </div>\n" +
+                    "                        </div>";
+            }
 
             document.getElementById('modal-area').innerHTML = content;
         }
@@ -290,5 +319,3 @@
         $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
     </script>
 @endsection
-
-

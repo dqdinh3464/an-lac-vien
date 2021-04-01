@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="242f73d7-8986-4b81-8d52-70d87625170e" name="anlacvien" url="http://anlacvien.htc-it.team:2222/">
+        <fileTransfer rootFolder="/domains/anlacvien.htc-it.team/public_html" host="202.92.4.118" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
