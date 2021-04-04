@@ -9,17 +9,15 @@
 
     <title>An Lạc Viên</title>
     <!-- Scripts -->
-{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
-    <script defer src="{{asset("/js/html5shiv.js")}}"></script>
-{{--    <script src="{{asset("/js/respond.min.js")}}"></script>--}}
-    <script defer src="{{ asset('js/app.js') }}" defer></script>
+    <script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script async src="{{asset("/js/html5shiv.js")}}"></script>
+   <script async src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
 
     <!-- Styles -->
-{{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-    <link type="text/css" href="{{asset("/css/icon/css/all.css")}}" rel="stylesheet">
+    <link href="{{asset("/css/icon/css/all.css")}}" rel="stylesheet">
     <link href="{{asset("/css/bootstrap.min.css")}}" rel="stylesheet">
     <link href="{{asset("/css/prettyPhoto.css")}}" rel="stylesheet">
     <link href="{{asset("/css/animate.css")}}" rel="stylesheet">
@@ -89,19 +87,14 @@
         </main>
     </div>
 
-{{--    <script--}}
-{{--        src="https://code.jquery.com/jquery-1.12.4.min.js"--}}
-{{--        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="--}}
-{{--        crossorigin="anonymous">--}}
-{{--    </script>--}}
-    <script defer src="{{asset("/js/jquery.js")}}"></script>
-    <script defer src="{{asset("/js/jquery-ui.min.js")}}"></script>
-    <script defer src="{{asset("/js/bootstrap.min.js")}}"></script>
-    <script defer src="{{asset("/js/jquery.scrollUp.min.js")}}"></script>
-    <script defer src="{{asset("/js/jquery.prettyPhoto.js")}}"></script>
-    <script defer src="{{asset("/js/main.js")}}"></script>
-    <script defer src="{{asset("/js/typeahead.bundle.js")}}"></script>
-    <script defer src="{{asset("/js/bloodhound.js")}}"></script>
+    <script async src="{{asset("/js/jquery.js")}}"></script>
+    <script async src="{{asset("/js/jquery-ui.min.js")}}"></script>
+    <script async src="{{asset("/js/bootstrap.min.js")}}"></script>
+    <script async src="{{asset("/js/jquery.scrollUp.min.js")}}"></script>
+    <script async src="{{asset("/js/jquery.prettyPhoto.js")}}"></script>
+    <script async src="{{asset("/js/main.js")}}"></script>
+    <script async src="{{asset("/js/typeahead.bundle.js")}}"></script>
+    <script async src="{{asset("/js/bloodhound.js")}}"></script>
 
     @yield('js')
 </body>

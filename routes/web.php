@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes([
+    'register' => false,
+    'verify' => false,
+]);
+
+
 Route::get("/", "HomeController@index")->name('home.index');
 
 Route::get("/search", "HomeController@search")->name('home.search');
@@ -22,4 +28,8 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Auth::routes();
+
+Route::fallback(function(){
+    abort(404, "Không tìm thấy trang bạn yêu cầu");
+});
 
